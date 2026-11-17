@@ -1,0 +1,802 @@
+{
+  "$comment": "Contrato dos SDKs. Cada caso: a chamada canônica (recurso.método e argumentos) e a requisição exata que todo SDK deve montar. check.py garante que cada operação de openapi.json tem caso e que nenhum caso usa parâmetro inexistente. Os testes de cada SDK leem este arquivo.",
+  "cnpj": "11222333000181",
+  "cases": [
+    {
+      "id": "cnpj.consultar",
+      "args": [
+        "11.222.333/0001-81"
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181",
+      "query": {},
+      "response": {
+        "cnpj": "11222333000181",
+        "razaoSocial": "ACME LTDA"
+      }
+    },
+    {
+      "id": "cnpj.consultar.tolerancia",
+      "call": "cnpj.consultar",
+      "args": [
+        "11222333000181",
+        {
+          "toleranceDays": 7
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181",
+      "query": {
+        "toleranceDays": "7"
+      },
+      "response": {
+        "cnpj": "11222333000181",
+        "razaoSocial": "ACME LTDA"
+      }
+    },
+    {
+      "id": "cnpj.consultarAoVivo",
+      "args": [
+        "11222333000181"
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181",
+      "query": {
+        "toleranceDays": "0"
+      },
+      "response": {
+        "cnpj": "11222333000181",
+        "razaoSocial": "ACME LTDA"
+      }
+    },
+    {
+      "id": "cnpj.obterSimples",
+      "args": [
+        "11222333000181"
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181/simples",
+      "query": {},
+      "response": {
+        "cnpj": "11222333000181",
+        "optanteSimples": true
+      }
+    },
+    {
+      "id": "cnpj.obterInscricoesEstaduais",
+      "args": [
+        "11222333000181"
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181/ie",
+      "query": {},
+      "response": [
+        {
+          "inscricaoEstadual": "123",
+          "uf": "SP"
+        }
+      ]
+    },
+    {
+      "id": "cnpj.obterConformidade",
+      "args": [
+        "11222333000181"
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181/conformidade",
+      "query": {},
+      "response": {
+        "cnpj": "11222333000181"
+      }
+    },
+    {
+      "id": "cnpj.obterRelacionamentos",
+      "args": [
+        "11222333000181",
+        {
+          "page": 2,
+          "pageSize": 50,
+          "incluirInativas": true
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/cnpj/11222333000181/relacionamentos",
+      "query": {
+        "page": "2",
+        "pageSize": "50",
+        "incluirInativas": "true"
+      },
+      "response": {
+        "alvo": {
+          "cnpj": "11222333000181"
+        }
+      }
+    },
+    {
+      "id": "cnpj.consultarLote",
+      "args": [
+        [
+          "11.222.333/0001-81",
+          "45997418000153"
+        ]
+      ],
+      "method": "POST",
+      "path": "/v1/cnpj/batch",
+      "query": {},
+      "body": {
+        "cnpjs": [
+          "11222333000181",
+          "45997418000153"
+        ]
+      },
+      "response": [
+        {
+          "cnpj": "11222333000181"
+        }
+      ]
+    },
+    {
+      "id": "cnpj.obterSimplesLote",
+      "args": [
+        [
+          "11222333000181"
+        ]
+      ],
+      "method": "POST",
+      "path": "/v1/cnpj/batch/simples",
+      "query": {},
+      "body": {
+        "cnpjs": [
+          "11222333000181"
+        ]
+      },
+      "response": [
+        {
+          "cnpj": "11222333000181"
+        }
+      ]
+    },
+    {
+      "id": "socios.listarEmpresas",
+      "args": [
+        "0123456789abcdef0123",
+        {
+          "page": 1,
+          "pageSize": 10,
+          "incluirInativas": false
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/socios/0123456789abcdef0123/empresas",
+      "query": {
+        "page": "1",
+        "pageSize": "10",
+        "incluirInativas": "false"
+      },
+      "response": {
+        "socio": {
+          "hashSocio": "0123456789abcdef0123"
+        }
+      }
+    },
+    {
+      "id": "ceps.consultar",
+      "args": [
+        "01001-000"
+      ],
+      "method": "GET",
+      "path": "/v1/ceps/01001000",
+      "query": {},
+      "response": {
+        "cep": "01001000"
+      }
+    },
+    {
+      "id": "ceps.buscar",
+      "args": [
+        {
+          "uf": "SP",
+          "idMunicipio": 7107,
+          "nomeMunicipio": "São Paulo",
+          "logradouro": "Praça da Sé",
+          "page": 1,
+          "pageSize": 5
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/ceps",
+      "query": {
+        "uf": "SP",
+        "idMunicipio": "7107",
+        "nomeMunicipio": "São Paulo",
+        "logradouro": "Praça da Sé",
+        "page": "1",
+        "pageSize": "5"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 5,
+        "total": 1,
+        "items": [
+          {
+            "cep": "01001000"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ceps.buscar.q",
+      "call": "ceps.buscar",
+      "args": [
+        {
+          "q": "paulista",
+          "uf": "SP"
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/ceps",
+      "query": {
+        "q": "paulista",
+        "uf": "SP"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 0,
+        "items": []
+      }
+    },
+    {
+      "id": "ceps.buscarProximos",
+      "args": [
+        {
+          "latitude": -23.5503,
+          "longitude": -46.6339,
+          "raioMetro": 500,
+          "page": 1,
+          "pageSize": 20
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/ceps/geo",
+      "query": {
+        "latitude": "-23.5503",
+        "longitude": "-46.6339",
+        "raioMetro": "500",
+        "page": "1",
+        "pageSize": "20"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "items": [
+          {
+            "cep": "01001000"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ceps.buscarProximosDoCep",
+      "args": [
+        "01001-000",
+        {
+          "raioMetro": 1000
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/ceps/geo/01001000",
+      "query": {
+        "raioMetro": "1000"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "items": [
+          {
+            "cep": "01002000"
+          }
+        ]
+      }
+    },
+    {
+      "id": "empresas.pesquisar",
+      "args": [
+        {
+          "q": "padaria",
+          "uf": "SP",
+          "codigoMunicipio": "7107",
+          "cnpjRaiz": "11222333",
+          "cnpj": "11222333000181",
+          "dataAberturaInicio": "2020-01-01",
+          "dataAberturaFim": "2020-12-31",
+          "codigoSituacaoCadastral": "2",
+          "ceps": "01001000,01002000",
+          "cnaes": "1091101",
+          "page": 1,
+          "pageSize": 20
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/empresas",
+      "query": {
+        "q": "padaria",
+        "uf": "SP",
+        "codigoMunicipio": "7107",
+        "cnpjRaiz": "11222333",
+        "cnpj": "11222333000181",
+        "dataAberturaInicio": "2020-01-01",
+        "dataAberturaFim": "2020-12-31",
+        "codigoSituacaoCadastral": "2",
+        "ceps": "01001000,01002000",
+        "cnaes": "1091101",
+        "page": "1",
+        "pageSize": "20"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "items": [
+          {
+            "cnpj": "11222333000181"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cnaes.listar",
+      "args": [
+        {
+          "page": 2,
+          "pageSize": 100
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/cnaes",
+      "query": {
+        "page": "2",
+        "pageSize": "100"
+      },
+      "response": {
+        "page": 2,
+        "pageSize": 100,
+        "total": 1,
+        "items": [
+          {
+            "codigo": "1091101"
+          }
+        ]
+      }
+    },
+    {
+      "id": "estados.listar",
+      "args": [],
+      "method": "GET",
+      "path": "/v1/estados",
+      "query": {},
+      "response": {
+        "page": 1,
+        "pageSize": 27,
+        "total": 27,
+        "items": [
+          {
+            "sigla": "SP"
+          }
+        ]
+      }
+    },
+    {
+      "id": "municipios.listar",
+      "args": [
+        {
+          "uf": "SP",
+          "page": 1,
+          "pageSize": 50
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/municipios",
+      "query": {
+        "uf": "SP",
+        "page": "1",
+        "pageSize": "50"
+      },
+      "response": {
+        "page": 1,
+        "pageSize": 50,
+        "total": 1,
+        "items": [
+          {
+            "id": 7107
+          }
+        ]
+      }
+    },
+    {
+      "id": "municipios.obterPorId",
+      "args": [
+        7107
+      ],
+      "method": "GET",
+      "path": "/v1/municipios/7107",
+      "query": {},
+      "response": {
+        "id": 7107
+      }
+    },
+    {
+      "id": "mercado.obterCnae",
+      "args": [
+        "1091-1/01",
+        {
+          "uf": "SP",
+          "meses": 12
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/mercado/cnaes/1091101",
+      "query": {
+        "uf": "SP",
+        "meses": "12"
+      },
+      "response": {
+        "cnae": {
+          "codigo": "1091101",
+          "descricao": "Fabricação de produtos de panificação industrial"
+        }
+      }
+    },
+    {
+      "id": "mercado.obterMunicipio",
+      "args": [
+        7107
+      ],
+      "method": "GET",
+      "path": "/v1/mercado/municipios/7107",
+      "query": {},
+      "response": {
+        "municipio": {
+          "id": 7107
+        }
+      }
+    },
+    {
+      "id": "mercado.obterIndicador",
+      "args": [
+        "ipca",
+        {
+          "inicio": "202601",
+          "fim": "202606"
+        }
+      ],
+      "method": "GET",
+      "path": "/v1/mercado/indicadores/ipca",
+      "query": {
+        "inicio": "202601",
+        "fim": "202606"
+      },
+      "response": {
+        "tipo": "ipca",
+        "pontos": []
+      }
+    },
+    {
+      "id": "creditos.consultar",
+      "args": [],
+      "method": "GET",
+      "path": "/v1/credits",
+      "query": {},
+      "response": {
+        "plan": {}
+      }
+    }
+  ],
+  "errors": [
+    {
+      "status": 401,
+      "body": {
+        "status": "error",
+        "code": 1002,
+        "message": "Token de autenticação não informado ou inválido."
+      },
+      "error": "authentication"
+    },
+    {
+      "status": 400,
+      "body": {
+        "status": "error",
+        "code": 1001,
+        "message": "Token de autenticação não informado."
+      },
+      "error": "authentication"
+    },
+    {
+      "status": 405,
+      "body": {
+        "status": "error",
+        "code": 1004,
+        "message": "Não há créditos restantes."
+      },
+      "error": "insufficientCredits"
+    },
+    {
+      "status": 405,
+      "body": {
+        "status": "error",
+        "code": 1006,
+        "message": "Não há créditos restantes para consultas em tempo real."
+      },
+      "error": "insufficientCredits"
+    },
+    {
+      "status": 405,
+      "body": {
+        "status": "error",
+        "code": 1012,
+        "message": "Recurso disponível nos planos pagos."
+      },
+      "error": "paidPlanRequired"
+    },
+    {
+      "status": 405,
+      "body": {
+        "status": "error",
+        "code": 1005,
+        "message": "O plano contratado não permite consultas em tempo real."
+      },
+      "error": "paidPlanRequired"
+    },
+    {
+      "status": 404,
+      "body": {
+        "status": "error",
+        "code": 1000,
+        "message": "O valor pesquisado não foi encontrado."
+      },
+      "error": "notFound"
+    },
+    {
+      "status": 400,
+      "body": {
+        "status": "error",
+        "code": 1007,
+        "message": "CEP inválido."
+      },
+      "error": "validation"
+    },
+    {
+      "status": 429,
+      "body": {
+        "status": "error",
+        "code": 1003,
+        "message": "Limite excedido."
+      },
+      "error": "rateLimit",
+      "retryable": true
+    },
+    {
+      "status": 503,
+      "body": {
+        "status": "error",
+        "code": 1014,
+        "message": "Tente novamente."
+      },
+      "error": "server",
+      "retryable": true
+    },
+    {
+      "status": 500,
+      "body": {
+        "status": "error",
+        "code": 9999,
+        "message": "Erro."
+      },
+      "error": "server",
+      "retryable": false
+    }
+  ],
+  "invalid": [
+    {
+      "call": "cnpj.consultar",
+      "args": [
+        "123"
+      ],
+      "reason": "CNPJ com menos de 14 caracteres"
+    },
+    {
+      "call": "cnpj.consultar",
+      "args": [
+        "11.222.333/0001-8X"
+      ],
+      "reason": "os dois últimos caracteres são dígitos verificadores"
+    },
+    {
+      "call": "cnpj.obterConformidade",
+      "args": [
+        "../credits"
+      ],
+      "reason": "caminho injetado no lugar do CNPJ"
+    },
+    {
+      "call": "cnpj.consultarLote",
+      "args": [
+        []
+      ],
+      "reason": "lote vazio"
+    },
+    {
+      "call": "cnpj.consultarLote",
+      "args": [
+        [
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181",
+          "11222333000181"
+        ]
+      ],
+      "reason": "lote acima de 100"
+    },
+    {
+      "call": "socios.listarEmpresas",
+      "args": [
+        "xyz"
+      ],
+      "reason": "hashSocio tem 20 caracteres hexadecimais"
+    },
+    {
+      "call": "ceps.consultar",
+      "args": [
+        "0100100"
+      ],
+      "reason": "CEP com menos de 8 dígitos"
+    },
+    {
+      "call": "ceps.buscarProximosDoCep",
+      "args": [
+        "01001000",
+        {
+          "raioMetro": 0
+        }
+      ],
+      "reason": "raioMetro tem de ser maior que zero"
+    },
+    {
+      "call": "ceps.buscarProximos",
+      "args": [
+        {
+          "latitude": 91,
+          "longitude": 0,
+          "raioMetro": 100
+        }
+      ],
+      "reason": "latitude fora de -90..90"
+    },
+    {
+      "call": "mercado.obterIndicador",
+      "args": [
+        "../x"
+      ],
+      "reason": "tipo injetado no caminho"
+    }
+  ],
+  "valid": [
+    {
+      "call": "cnpj.consultar",
+      "args": [
+        "12.ABC.345/01DE-35"
+      ],
+      "path": "/v1/cnpj/12ABC34501DE35",
+      "reason": "CNPJ alfanumérico (IN RFB 2.229/2024) passa pelo SDK; quem decide é a API"
+    }
+  ],
+  "headers": {
+    "$comment": "Identificação do SDK, lida pela API para medir uso por SDK e versão. X-NextApi-Client: <sdk>/<versão>. X-NextApi-Client-Info: <runtime>/<versão>; <sistema>[; <app>]. O appInfo passa por um filtro de caracteres antes de entrar em qualquer cabeçalho (o mesmo vale para o User-Agent): CR/LF ou espaço quebrariam o cabeçalho.",
+    "client": "^(typescript|python|dotnet|go|java|php)/\\d+\\.\\d+\\.\\d+$",
+    "info": "^[a-z]+/[0-9A-Za-z._+-]+; (linux|darwin|windows|browser|other)(; [A-Za-z0-9._/@+-]{1,64})?$",
+    "appInfo": {
+      "input": "minha app/1.2\r\nX-Evil: 1",
+      "sanitized": "minhaapp/1.2X-Evil1"
+    },
+    "allowed": "A-Za-z0-9._/@+-, até 64 caracteres"
+  }
+}

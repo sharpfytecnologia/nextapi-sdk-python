@@ -1,0 +1,28 @@
+{
+  "_doc": "Teste de fumaça contra a API publicada (sdks/smoke.sh). Só rotas já em produção. 'expect' lista os resultados aceitos: 'ok' ou a classe de erro do contrato. 'env' restringe o passo a sandbox ou production. 'badKey' troca a chave por uma inválida. Consome poucos créditos em produção (consulta, Simples e lote de 1 CNPJ).",
+  "steps": [
+    { "id": "creditos", "call": "creditos.consultar", "args": [], "expect": ["ok"] },
+    { "id": "estados", "call": "estados.listar", "args": [], "expect": ["ok"] },
+    { "id": "cnaes", "call": "cnaes.listar", "args": [{ "page": 1, "pageSize": 5 }], "expect": ["ok"] },
+    { "id": "municipios", "call": "municipios.listar", "args": [{ "uf": "SP", "page": 1, "pageSize": 5 }], "expect": ["ok"] },
+    { "id": "municipio", "call": "municipios.obterPorId", "args": [7107], "expect": ["ok"] },
+    { "id": "cep", "call": "ceps.consultar", "args": ["01001-000"], "expect": ["ok", "notFound"] },
+    { "id": "ceps.buscar", "call": "ceps.buscar", "args": [{ "uf": "SP", "page": 1, "pageSize": 2 }], "expect": ["ok"] },
+    { "id": "ceps.geo", "call": "ceps.buscarProximos", "args": [{ "latitude": -23.5503, "longitude": -46.6339, "raioMetro": 300, "page": 1, "pageSize": 2 }], "expect": ["ok"] },
+    { "id": "ceps.geoCep", "call": "ceps.buscarProximosDoCep", "args": ["01001000", { "raioMetro": 300 }], "expect": ["ok", "notFound"] },
+    { "id": "empresas", "call": "empresas.pesquisar", "args": [{ "uf": "SP", "page": 1, "pageSize": 2 }], "expect": ["ok"] },
+    { "id": "cnpj", "call": "cnpj.consultar", "args": ["00.000.000/0001-91"], "expect": ["ok", "notFound"] },
+    { "id": "cnpj.simples", "call": "cnpj.obterSimples", "args": ["00000000000191"], "expect": ["ok", "notFound"] },
+    { "id": "cnpj.ie", "call": "cnpj.obterInscricoesEstaduais", "args": ["00000000000191"], "expect": ["ok", "notFound"] },
+    { "id": "cnpj.lote", "call": "cnpj.consultarLote", "args": [["00000000000191"]], "expect": ["ok"] },
+    { "id": "cnpj.simplesLote", "call": "cnpj.obterSimplesLote", "args": [["00000000000191"]], "expect": ["ok"] },
+    { "id": "cnpj.alfanumerico", "call": "cnpj.consultar", "args": ["12.ABC.345/01DE-35"], "expect": ["notFound", "validation"] },
+    { "id": "chave.invalida", "call": "creditos.consultar", "args": [], "badKey": true, "expect": ["authentication"] },
+    { "id": "magico.404", "env": "sandbox", "call": "cnpj.consultar", "args": ["99999991000125"], "expect": ["notFound"] },
+    { "id": "magico.semCreditos", "env": "sandbox", "call": "cnpj.consultar", "args": ["99999992000170"], "expect": ["insufficientCredits"] },
+    { "id": "magico.provedor", "env": "sandbox", "call": "cnpj.consultarAoVivo", "args": ["99999994000169"], "expect": ["server"] },
+    { "id": "magico.planoPago", "env": "sandbox", "call": "cnpj.consultar", "args": ["99999996000158"], "expect": ["paidPlanRequired"] },
+    { "id": "magico.chave", "env": "sandbox", "call": "cnpj.consultar", "args": ["99999997000100"], "expect": ["authentication"] },
+    { "id": "magico.limite", "env": "sandbox", "call": "cnpj.consultar", "args": ["99999993000114"], "expect": ["rateLimit"] }
+  ]
+}

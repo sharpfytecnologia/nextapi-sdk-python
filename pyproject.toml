@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sharpfy-nextapi"
+version = "0.2.0"
+description = "SDK oficial da NextAPI para Python: CNPJ, CEP, sócios e mercado. Sem dependências."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Sharpfy", email = "contato@sharpfy.com.br" }
+]
+keywords = [
+    "nextapi",
+    "sharpfy",
+    "cnpj",
+    "receita-federal",
+    "simples-nacional",
+    "socios",
+    "compliance",
+    "consulta-cnpj"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://nextapi.com.br"
+Documentation = "https://docs.nextapi.com.br"
+Repository = "https://github.com/sharpfytecnologia/nextapi-sdk-python"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sharpfy_nextapi*"]
+
+[tool.setuptools.package-data]
+sharpfy_nextapi = ["py.typed"]
